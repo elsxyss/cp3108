@@ -14,6 +14,9 @@ import {
   TreeNode
 } from './TreeNode';
 
+
+
+
 /**
  *  A tree object built based on the given Data, Function or Array of
  *  data/functions/arrays.
@@ -49,7 +52,7 @@ export class Tree {
 
   static fromSourceStructure(tree: Data): Tree {
     let nodeCount = 0;
-
+    console.log(tree);
     function constructNode(structure: Data): TreeNode {
       const alreadyDrawnNode = visitedStructures.get(structure);
       if (alreadyDrawnNode !== undefined) {
@@ -70,10 +73,10 @@ export class Tree {
      */
     function constructTree(tree: Array<Data>) {
       const node = new ArrayTreeNode();
-
       visitedStructures.set(tree, node);
       treeNodes[nodeCount] = node;
       nodeCount++;
+      //console.log(tree);
 
       // Done like that instead of in constructor to prevent infinite recursion
       node.children = tree.map(constructNode);
@@ -107,6 +110,7 @@ export class Tree {
       return new DataTreeNode(data);
     }
 
+
     const visitedStructures: Map<Function | Pair | Array<Data>, DrawableTreeNode> = new Map(); // detects cycles
     const treeNodes: DrawableTreeNode[] = [];
     const rootNode = constructNode(tree);
@@ -123,11 +127,11 @@ export class Tree {
  *  Drawer function of a tree
  */
 class TreeDrawer {
+  private tree: Tree;
   public leftCOUNTER: integer = 0;
   public downCOUNTER: integer = 0;
   private runningX: integer = 0;
   private runningY: integer = 0;
-  private tree: Tree;
 
   private drawables: JSX.Element[];
   private nodeWidths: Map<TreeNode, number>;
@@ -137,6 +141,7 @@ class TreeDrawer {
   // Used to account for backward arrow
   private minX = 0;
   private minY = 0;
+  private static colorCounter=0;
 
   constructor(tree: Tree) {
     this.tree = tree;
@@ -147,7 +152,7 @@ class TreeDrawer {
   /**
    *  Draws a tree at x, y, by calling drawNode on the root at x, y.
    */
-  draw(x: number, y: number): JSX.Element {
+  draw(x: number, y: number, drawT: boolean): JSX.Element {
     if (this.tree.rootNode instanceof DataTreeNode) {
       const text = toText(this.tree.rootNode.data);
       const textConfig = {
@@ -166,10 +171,9 @@ class TreeDrawer {
         </Layer>
       );
     } else {
-      this.drawNode(this.tree.rootNode, x, y, x, y, 0);
-      
-      this.width = this.getNodeWidth(this.tree.rootNode) - this.minX;
-      this.height = this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth;
+      this.drawNode(this.tree.rootNode, x, y, x, y,0, drawT, 0,0);
+      this.width = ( this.getNodeWidth(this.tree.rootNode) - this.minX );
+      this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
 
       // me added
       const EvanVariable = Math.max(this.leftCOUNTER, this.downCOUNTER); 
@@ -194,7 +198,8 @@ class TreeDrawer {
    * @param parentX The x position of the parent. If there is no parent, it is the same as x.
    * @param parentY The y position of the parent. If there is no parent, it is the same as y.
    */
-  drawNode(node: TreeNode, x: number, y: number, parentX: number, parentY: number, oldY: number) {
+  drawNode(node: TreeNode, x: number, y: number, parentX: number, parentY: number, 
+    oldX: number, drawT:boolean, colorIndex:number, parentIndex: number) {
     if (node instanceof AlreadyParsedTreeNode) {
       // if its child is part of a cycle and it's been drawn, link back to that node instead
       const drawnNode = node.actualNode;
@@ -239,33 +244,39 @@ class TreeDrawer {
       const drawable = node.createDrawable(x, y, parentX, parentY);
       this.drawables.push(drawable);
     } else if (node instanceof ArrayTreeNode) {
-      const drawable = node.createDrawable(x, y, parentX, parentY);
+
+      //draw tree mode
+      if (drawT){
+      const drawable = node.createDrawable(x, y, parentX, parentY, colorIndex);
       this.drawables.push(drawable);
 
       // if it has children, draw them
       // const width = this.getNodeWidth(node);
-      // let leftX = x;
-
+      // let firstCall = false;
       node.children?.forEach((childNode, index) => {
-        // const childY = childNode instanceof AlreadyParsedTreeNode ? y : y + Config.DistanceY;
+        //const childY = childNode instanceof AlreadyParsedTreeNode ? y : y + Config.DistanceY;
 
         let myY;
         let myX;
-        const scalerV = Math.round(4 / (Math.round(y / (Config.DistanceY * 2)))); // me added note to self: how to change "4"? Wanted to use the new left&downCounters but they are only updated AFTER, and also, they are diff for every diff node
+        const scalerV = Math.round(4 / (Math.round(y / (Config.DistanceY * 2))));
         if (index == 0 && y == parentY + Config.DistanceY) { // NEW left branch
           myY = y + Config.DistanceY * 2;
           myX = x - Config.NWidth * scalerV;
+          TreeDrawer.colorCounter++;
+          colorIndex=TreeDrawer.colorCounter;
         } else if (index == 0) { // NEW right branch
           myY = y + Config.DistanceY * 2;
           myX = x + Config.NWidth * scalerV;
+          colorIndex=TreeDrawer.colorCounter;
         } else if (y == parentY + Config.DistanceY) { // third box
           myY = y;
           myX = x + Config.NWidth * 2;
+          colorIndex=parentIndex;
         } else { // second box
           myY = y + Config.DistanceY;
           myX = x - Config.NWidth;
+          colorIndex=parentIndex;
         }
-
         // me added
         if (x < this.runningX && index == 0 && y == parentY + Config.DistanceY) { // NEW left branches that stretch towards the left
           this.leftCOUNTER++;
@@ -277,11 +288,25 @@ class TreeDrawer {
           this.runningY = myY;
         }
 
-
-        this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, parentY);
+        this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, parentX, drawT, colorIndex, colorIndex); // leftX, childY
         // const childNodeWidth = this.getNodeWidth(childNode);
-        // leftX += childNodeWidth ? childNodeWidth + Config.DistanceX : 0;
       });
+      }
+      else{ //original
+        const drawable = node.createDrawable(x, y, parentX, parentY, 0);
+      this.drawables.push(drawable);
+
+      // if it has children, draw them
+      // const width = this.getNodeWidth(node);
+      let leftX = x;
+      node.children?.forEach((childNode, index) => {
+        const childY = childNode instanceof AlreadyParsedTreeNode ? y : y + Config.DistanceY;
+        this.drawNode(childNode, leftX, childY, x + Config.BoxWidth * index, y, 0, drawT, 0,0);
+        const childNodeWidth = this.getNodeWidth(childNode);
+        leftX += childNodeWidth ? childNodeWidth + Config.DistanceX : 0;
+      });
+      }
+      
     }
   }
 

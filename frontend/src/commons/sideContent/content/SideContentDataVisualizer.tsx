@@ -1,4 +1,4 @@
-import { Button, Card, Classes } from '@blueprintjs/core';
+import { AnchorButton, Button, Card, Checkbox, Classes } from '@blueprintjs/core';
 import { IconNames } from '@blueprintjs/icons';
 import { HotkeyItem } from '@mantine/hooks';
 import { bindActionCreators } from '@reduxjs/toolkit';
@@ -19,6 +19,7 @@ import { ItalicLink } from './SideContentCseMachine';
 type State = {
   steps: Step[];
   currentStep: number;
+  treeMode: boolean;
 };
 
 type OwnProps = {
@@ -37,7 +38,7 @@ type DispatchProps = {
 class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchProps, State> {
   constructor(props: any) {
     super(props);
-    this.state = { steps: [], currentStep: 0 };
+    this.state = { steps: [], currentStep: 0, treeMode: false };
     DataVisualizer.init(steps => {
       if (this.state.steps.length > 0) {
         //  Blink icon
@@ -133,6 +134,19 @@ class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchP
             </div>
           ) : (
             <DataVisualizerDefaultText />
+          )}
+          {this.state.steps.length > 0 && (
+            <AnchorButton
+              onMouseUp={()=>{
+                DataVisualizer.toggleTreeMode();
+                DataVisualizer.redraw();
+              }}
+              icon="tree"
+              >
+                <Checkbox
+                  checked={DataVisualizer.getTreeMode()}
+                  />
+              </AnchorButton>
           )}
         </div>
       </HotKeys>
