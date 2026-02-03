@@ -14,8 +14,6 @@ import {
   TreeNode
 } from './TreeNode';
 
-// test
-
 /**
  *  A tree object built based on the given Data, Function or Array of
  *  data/functions/arrays.
@@ -90,6 +88,8 @@ export class Tree {
      * @param func The function to construct a node for.
      */
     function constructFunction(func: Function) {
+      let test = 0;
+      test = 5;
       const node = new FunctionTreeNode();
 
       // memoise current function
