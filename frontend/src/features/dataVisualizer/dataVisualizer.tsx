@@ -45,8 +45,7 @@ export default class DataVisualizer {
     if (!DataVisualizer.setSteps) {
       throw new Error('Data visualizer not initialized');
     }
-    console.log(structures);
-    DataVisualizer.history.push(structures);
+    this.dataList=structures;
     if (this.counter <= 1) {
         DataVisualizer._instance.addStep(structures);
     }
