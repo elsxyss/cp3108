@@ -2,6 +2,7 @@ import Konva from 'konva';
 import { Layer, Text } from 'react-konva';
 
 import { Config } from '../Config';
+import DataVisualizer from '../dataVisualizer';
 import { Data, Pair } from '../dataVisualizerTypes';
 import { isArray, isFunction, toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
@@ -174,10 +175,16 @@ class TreeDrawer {
       this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
 
       // me added
-      const EvanVariable = Math.max(this.leftCOUNTER, this.downCOUNTER); 
+      const EvanVariable1 = Math.max(this.leftCOUNTER, this.downCOUNTER); 
+      let EvanVariable2;
+      if (EvanVariable1 == 0) {
+        EvanVariable2 = EvanVariable1;
+      } else {
+        EvanVariable2 = Math.pow(2, EvanVariable1);
+      }
 
       return (
-        <Layer key={x + ', ' + y} offsetX={-(EvanVariable * Config.NWidth * 3)} offsetY={this.minY}>
+        <Layer key={x + ', ' + y} offsetX={-(EvanVariable2 * Config.NWidth * 3) - (EvanVariable1 * Config.NWidth * 3)} offsetY={this.minY}>
           {this.drawables}
         </Layer>
       );
@@ -256,7 +263,7 @@ class TreeDrawer {
 
         let myY;
         let myX;
-        const scalerV = Math.round(4 / (Math.round(y / (Config.DistanceY * 2))));
+        const scalerV = Math.round(Math.pow(2, DataVisualizer.binaryTreeDepth) / (Math.round(y / (Config.DistanceY * 2))));
         if (index == 0 && y == parentY + Config.DistanceY) { // NEW left branch
           myY = y + Config.DistanceY * 2;
           myX = x - Config.NWidth * scalerV;
