@@ -1,7 +1,7 @@
 import { AnchorButton, Button, Card, Checkbox, Classes } from '@blueprintjs/core';
-import { IconNames } from '@blueprintjs/icons';
 import { Tooltip } from '@blueprintjs/core';
 import { Icon } from '@blueprintjs/core';
+import { IconNames } from '@blueprintjs/icons';
 import { HotkeyItem } from '@mantine/hooks';
 import { bindActionCreators } from '@reduxjs/toolkit';
 import classNames from 'classnames';

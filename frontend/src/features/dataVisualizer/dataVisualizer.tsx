@@ -21,12 +21,30 @@ export default class DataVisualizer {
   private static _instance = new DataVisualizer();
   private static treeMode: boolean = false;
   private static dataList: Data []=[]; 
+  public static binaryTreeDepth: number = 0;
 
   private steps: Step[] = [];
   private nodeLabel = 0;
   private nodeToLabelMap: Map<DataTreeNode, number> = new Map();
 
   private constructor() {}
+
+  public static get_depth(structures: Data[]): number { //works assuming is a binary tree
+    let depth=0;
+    if (!(structures instanceof Array)||structures[0]===null){
+      return depth;
+    }
+    else{
+      if (!(structures[0] instanceof Array && structures[1] instanceof Array)){
+        depth=1;
+      }
+      depth+=Math.max(this.get_depth(structures[0]), this.get_depth(structures[1]));  
+      //console.log(structures);
+      //console.log(depth);
+      return depth;
+
+    }
+  }
 
   public static init(setSteps: (step: Step[]) => void): void {
     DataVisualizer.setSteps = setSteps;
@@ -44,6 +62,7 @@ export default class DataVisualizer {
     if (!DataVisualizer.setSteps) {
       throw new Error('Data visualizer not initialized');
     }
+    DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]) - 1;
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
@@ -101,9 +120,10 @@ export default class DataVisualizer {
         </Stage>
       );
     } else {
-      const EvanVariable = Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER); 
+      const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER);
+      const EvanVariable2 = Math.pow(2, Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER));
       return (
-        <Stage key={xs} width={EvanVariable * Config.NWidth * 3 * 2 + leftMargin + Config.NWidth} height={EvanVariable * Config.DistanceY * 3 + topMargin}>
+        <Stage key={xs} width={(EvanVariable2 * Config.NWidth * 3 + EvanVariable1 * Config.NWidth * 3) * 2 + leftMargin + Config.NWidth} height={EvanVariable1 * Config.DistanceY * 3 + topMargin}>
           {layer}
         </Stage>
       );
