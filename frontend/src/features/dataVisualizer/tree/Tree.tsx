@@ -116,6 +116,7 @@ export class Tree {
   }
 
   draw(): TreeDrawer {
+    TreeDrawer.colorCounter = 0;
     return new TreeDrawer(this);
   }
 }
@@ -138,7 +139,7 @@ class TreeDrawer {
   // Used to account for backward arrow
   private minX = 0;
   private minY = 0;
-  private static colorCounter=0;
+  public static colorCounter=0;
 
   constructor(tree: Tree) {
     this.tree = tree;

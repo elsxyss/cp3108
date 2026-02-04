@@ -15,13 +15,12 @@ import { DataTreeNode } from './tree/TreeNode';
  * clear is used by WorkspaceSaga to reset the visualizer after every "Run" button press
  */
 export default class DataVisualizer {
-  private static counter = 0;
+  private static counter = 1;
   private static empty(step: Step[]) {}
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
   private static _instance = new DataVisualizer();
   private static treeMode: boolean = false;
   private static dataList: Data []=[]; 
-  private static history: Data []=[];
 
   private steps: Step[] = [];
   private nodeLabel = 0;
@@ -46,9 +45,7 @@ export default class DataVisualizer {
       throw new Error('Data visualizer not initialized');
     }
     this.dataList=structures;
-    if (this.counter <= 1) {
-        DataVisualizer._instance.addStep(structures);
-    }
+    DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
   }
 
@@ -96,16 +93,25 @@ export default class DataVisualizer {
     //   layer=treeLayer;
     // }
     // me added, below is + leftMargin for default extra space on the right, and + one node width cuz gotta include the very root node
-    const EvanVariable = Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER); 
-
-    return (
-      <Stage key={xs} width={EvanVariable * Config.NWidth * 3 * 2 + leftMargin + Config.NWidth} height={EvanVariable * Config.DistanceY * 3 + topMargin}>
-        {layer}
-      </Stage>
-    );
+    
+    if (DataVisualizer.counter == 1) {
+      return (
+        <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
+          {layer}
+        </Stage>
+      );
+    } else {
+      const EvanVariable = Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER); 
+      return (
+        <Stage key={xs} width={EvanVariable * Config.NWidth * 3 * 2 + leftMargin + Config.NWidth} height={EvanVariable * Config.DistanceY * 3 + topMargin}>
+          {layer}
+        </Stage>
+      );
+    }
   }
   static redraw(){
     this.clear();
+    DataVisualizer.counter = - DataVisualizer.counter;
     return this.drawData(this.dataList);
   }
 
