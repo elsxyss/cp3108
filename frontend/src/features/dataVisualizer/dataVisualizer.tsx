@@ -21,7 +21,6 @@ export default class DataVisualizer {
   private static _instance = new DataVisualizer();
   private static treeMode: boolean = false;
   private static dataList: Data []=[]; 
-  private static history: Data []=[];
 
   private steps: Step[] = [];
   private nodeLabel = 0;

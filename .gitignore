@@ -1,0 +1,16 @@
+# Dependencies
+node_modules/
+.yarn/
+
+# Environment variables
+.env
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
