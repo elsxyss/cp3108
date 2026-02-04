@@ -9,7 +9,6 @@ import { DrawableTreeNode } from './DrawableTreeNode';
  */
 export class ArrayTreeNode extends DrawableTreeNode {
   Colors: string []= ["black","#d81d1d", "#9a10e4", "#1525d4", "#448e4c", "#e6d814"];
-  private static i:number=0;
   createDrawable(x: number, y: number, parentX: number, parentY: number, colorIndex: number): JSX.Element {
     let color="";
     // if (!partOfNode){
