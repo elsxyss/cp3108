@@ -139,10 +139,10 @@ export default class DataVisualizer {
         </Stage>
       );
     } else {
-      const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER);
-      const EvanVariable2 = Math.pow(2, Math.max(treeDrawer.leftCOUNTER, treeDrawer.downCOUNTER));
+      // const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
+      const EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
       return (
-        <Stage key={xs} width={(EvanVariable2 * Config.NWidth * 3 + EvanVariable1 * Config.NWidth * 3) * 2 + leftMargin + Config.NWidth} height={EvanVariable1 * Config.DistanceY * 3 + topMargin}>
+        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin + Config.NWidth} height={treeDrawer.downCOUNTER * Config.DistanceY * 3 + topMargin}>
           {layer}
         </Stage>
       );

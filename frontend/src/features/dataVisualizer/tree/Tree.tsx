@@ -127,9 +127,11 @@ export class Tree {
 class TreeDrawer {
   private tree: Tree;
   public leftCOUNTER: integer = 0;
+  public rightCOUNTER: integer = 0;
   public downCOUNTER: integer = 0;
   private runningX: integer = 0;
   private runningY: integer = 0;
+  private runningX2: integer = 0; // for rightCOUNTER
 
   private drawables: JSX.Element[];
   private nodeWidths: Map<TreeNode, number>;
@@ -174,16 +176,16 @@ class TreeDrawer {
       this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
 
       // me added
-      const EvanVariable1 = Math.max(this.leftCOUNTER, this.downCOUNTER); 
+      const EvanVariable1 = Math.max(this.leftCOUNTER, this.rightCOUNTER); 
       let EvanVariable2;
       if (EvanVariable1 == 0) {
         EvanVariable2 = EvanVariable1;
       } else {
-        EvanVariable2 = Math.pow(2, EvanVariable1);
+        EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
       }
 
       return (
-        <Layer key={x + ', ' + y} offsetX={-(EvanVariable2 * Config.NWidth * 3) - (EvanVariable1 * Config.NWidth * 3)} offsetY={this.minY}>
+        <Layer key={x + ', ' + y} offsetX={-(EvanVariable2 * Config.NWidth)} offsetY={this.minY}>
           {this.drawables}
         </Layer>
       );
@@ -262,7 +264,8 @@ class TreeDrawer {
 
         let myY;
         let myX;
-        const scalerV = Math.round(Math.pow(2, DataVisualizer.binaryTreeDepth) / (Math.round(y / (Config.DistanceY * 2))));
+        const scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth + 1) / 
+                                    Math.pow(2, (Math.round(y / (Config.DistanceY * 2)))) );
         if (index == 0 && y == parentY + Config.DistanceY) { // NEW left branch
           myY = y + Config.DistanceY * 2;
           myX = x - Config.NWidth * scalerV;
@@ -285,6 +288,9 @@ class TreeDrawer {
         if (x < this.runningX && index == 0 && y == parentY + Config.DistanceY) { // NEW left branches that stretch towards the left
           this.leftCOUNTER++;
           this.runningX = myX;
+        } else if (x > this.runningX2 && index == 0 && y == parentY + Config.DistanceY) { // NEW right branches that stretch towards the right
+          this.rightCOUNTER++;
+          this.runningX2 = myX;
         }
 
         if (y > this.runningY && index == 0) { // NEW branches (doesn't matter left or right) that stretches down
