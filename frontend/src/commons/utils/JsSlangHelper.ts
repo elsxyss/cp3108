@@ -93,6 +93,9 @@ function visualizeData(...args: Data[]) {
     return args[0].length === 1 ? args[0][0] : args[0];
   } catch (err) {
     console.log(err);
+    if (err.message==='Not a binary tree'){
+      throw new Error('Render binary tree only supports binary trees');
+    }
     throw new Error('Data visualizer is not enabled');
   }
 }

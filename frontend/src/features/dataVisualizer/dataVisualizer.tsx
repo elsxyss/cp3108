@@ -39,12 +39,27 @@ export default class DataVisualizer {
         depth=1;
       }
       depth+=Math.max(this.get_depth(structures[0]), this.get_depth(structures[1]));  
-      //console.log(structures);
-      //console.log(depth);
       return depth;
 
     }
   }
+  public static isBinaryTree(structures: Data[]): boolean {
+    if (structures[0]===null){
+      return true;
+    }
+    let next=structures[0];
+    let ans=false
+    let count=0;
+    while(next instanceof Array){
+      count++;
+      next=next[1];
+    }
+    if (count==3){
+      ans=true
+    }
+    return ans&&this.isBinaryTree(structures[0][1]);
+  }
+
 
   public static init(setSteps: (step: Step[]) => void): void {
     DataVisualizer.setSteps = setSteps;
@@ -63,6 +78,10 @@ export default class DataVisualizer {
       throw new Error('Data visualizer not initialized');
     }
     DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]) - 1;
+    console.log(this.isBinaryTree(structures));
+    if(!this.isBinaryTree(structures)&&DataVisualizer.treeMode){
+      throw new Error('Not a binary tree');
+    }
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
