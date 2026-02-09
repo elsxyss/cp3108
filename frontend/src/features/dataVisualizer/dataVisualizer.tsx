@@ -32,13 +32,14 @@ export default class DataVisualizer {
   public static get_depth(structures: Data[]): number { //works assuming is a binary tree
     let depth=0;
     if (!(structures instanceof Array)||structures[0]===null){
-      return depth;
+      return 0;
     }
     else{
       if (!(structures[0] instanceof Array && structures[1] instanceof Array)){
-        depth=1;
+        depth++;
       }
-      depth+=Math.max(this.get_depth(structures[0]), this.get_depth(structures[1]));  
+      depth+=Math.max(this.get_depth(structures[0]), this.get_depth(structures[1][0]));
+      console.log(depth);
       return depth;
 
     }
@@ -77,8 +78,7 @@ export default class DataVisualizer {
     if (!DataVisualizer.setSteps) {
       throw new Error('Data visualizer not initialized');
     }
-    DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]) - 1;
-    console.log(this.isBinaryTree(structures));
+    DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]);
     if(!this.isBinaryTree(structures)&&DataVisualizer.treeMode){
       throw new Error('Not a binary tree');
     }
