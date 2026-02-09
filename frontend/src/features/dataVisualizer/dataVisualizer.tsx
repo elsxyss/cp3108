@@ -1,4 +1,4 @@
-import { Stage } from 'react-konva';
+import { Layer, Stage } from 'react-konva';
 
 import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
@@ -19,9 +19,10 @@ export default class DataVisualizer {
   private static empty(step: Step[]) {}
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
   private static _instance = new DataVisualizer();
-  private static treeMode: boolean = false;
+  public static treeMode: boolean = false;
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
+  public static isBinTree: boolean = false;
 
   private steps: Step[] = [];
   private nodeLabel = 0;
@@ -78,9 +79,9 @@ export default class DataVisualizer {
     if (!DataVisualizer.setSteps) {
       throw new Error('Data visualizer not initialized');
     }
-    DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]);
-    if(!this.isBinaryTree(structures)&&DataVisualizer.treeMode){
-      throw new Error('Not a binary tree');
+    DataVisualizer.isBinTree=this.isBinaryTree(structures);
+    if (DataVisualizer.isBinTree){
+      DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]);
     }
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
@@ -138,7 +139,15 @@ export default class DataVisualizer {
           {layer}
         </Stage>
       );
-    } else {
+    }
+    if(!DataVisualizer.isBinTree&&DataVisualizer.treeMode){
+      return (
+        <Stage key={xs} width={400} height={100}>
+          {layer}
+        </Stage>
+      )
+    }
+    else {
       // const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
       const EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
       return (

@@ -170,7 +170,16 @@ class TreeDrawer {
           <Text {...textConfig} />
         </Layer>
       );
-    } else {
+    } 
+    if(!DataVisualizer.isBinTree&&DataVisualizer.treeMode){
+      return (
+        <Layer>
+          <Text text={'Render binary tree only supports binary trees'} 
+          align='center' fontStyle='normal' fontSize={20} fill={"red"} />
+        </Layer>
+      )
+    }
+    else {
       this.drawNode(this.tree.rootNode, x, y, x, y,0, drawT, 0,0);
       this.width = ( this.getNodeWidth(this.tree.rootNode) - this.minX );
       this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
