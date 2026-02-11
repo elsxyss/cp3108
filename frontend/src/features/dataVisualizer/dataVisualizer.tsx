@@ -1,4 +1,4 @@
-import { Layer, Stage } from 'react-konva';
+import {Stage } from 'react-konva';
 
 import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
@@ -20,6 +20,7 @@ export default class DataVisualizer {
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
   private static _instance = new DataVisualizer();
   public static treeMode: boolean = false;
+  public static BinTreeMode: boolean = false;
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
   public static isBinTree: boolean = false;
@@ -67,8 +68,16 @@ export default class DataVisualizer {
     DataVisualizer.setSteps = setSteps;
   }
 
+  public static toggleBinTreeMode(): void {
+    DataVisualizer.BinTreeMode = !DataVisualizer.BinTreeMode;
+  }
+
   public static toggleTreeMode(): void {
     DataVisualizer.treeMode = !DataVisualizer.treeMode;
+  }
+
+  public static getBinTreeMode(): boolean {
+    return DataVisualizer.BinTreeMode;
   }
 
   public static getTreeMode(): boolean {
@@ -126,7 +135,7 @@ export default class DataVisualizer {
     // To account for overflow to the top due to a backward arrow
     const topMargin = Config.StrokeWidth / 2;
 
-    const layer = treeDrawer.draw(leftMargin, topMargin, DataVisualizer.treeMode);
+    const layer = treeDrawer.draw(leftMargin, topMargin);
     //const treeLayer=treeDrawer.draw(leftMargin, topMargin, true);
     // if (DataVisualizer.treeMode){
     //   layer=treeLayer;
@@ -140,14 +149,23 @@ export default class DataVisualizer {
         </Stage>
       );
     }
-    if(!DataVisualizer.isBinTree&&DataVisualizer.treeMode){
+
+    //for general tree mode
+    if (DataVisualizer.treeMode){
+      return (
+        <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
+          {layer}
+        </Stage>
+      );
+    }
+    if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
       return (
         <Stage key={xs} width={400} height={100}>
           {layer}
         </Stage>
       )
     }
-    else {
+    else { //for binary tree mode
       // const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
       const EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
       return (
@@ -156,6 +174,12 @@ export default class DataVisualizer {
         </Stage>
       );
     }
+    
+    return (
+      <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
+        {layer}
+      </Stage>
+    );
   }
   static redraw(){
     this.clear();
