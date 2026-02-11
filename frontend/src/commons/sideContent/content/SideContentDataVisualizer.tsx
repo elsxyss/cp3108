@@ -138,23 +138,43 @@ class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchP
             <DataVisualizerDefaultText />
           )}
           {this.state.steps.length > 0 && (
-            <Tooltip content="Render Binary Tree" position="top">
-            <AnchorButton
-              style={{display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}
-              onMouseUp={()=>{
-                DataVisualizer.toggleTreeMode();
-                DataVisualizer.redraw();
-              }}
+            <><Tooltip content="Render Binary Tree" position="top">
+              <AnchorButton
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                onMouseUp={() => {
+                  if (DataVisualizer.getTreeMode()){
+                    return
+                  }
+                  DataVisualizer.toggleBinTreeMode();
+                  DataVisualizer.redraw();
+                } }
               >
-                <div style={{display: 'flex', alignItems: 'center', gap: 8}}>
-                  <Icon icon="one-to-many" style={{transform: 'rotate(90deg)', marginLeft: 6}} />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <Icon icon="one-to-many" style={{ transform: 'rotate(90deg)', marginLeft: 6 }} />
                   <Checkbox
-                    checked={DataVisualizer.getTreeMode()}
-                    style={{marginTop: 7}}
-                    />
-                  </div>
+                    checked={DataVisualizer.getBinTreeMode()}
+                    style={{ marginTop: 7 }} />
+                </div>
               </AnchorButton>
-              </Tooltip>
+            </Tooltip><Tooltip content="Render General Tree" position="top">
+                <AnchorButton
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' , marginLeft: 10}}
+                  onMouseUp={() => {
+                    if (DataVisualizer.getBinTreeMode()){
+                      return
+                    }
+                    DataVisualizer.toggleTreeMode();
+                    DataVisualizer.redraw();
+                  } }
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Icon icon="diagram-tree" />
+                    <Checkbox
+                      checked={DataVisualizer.getTreeMode()}
+                      style={{ marginTop: 7 }} />
+                  </div>
+                </AnchorButton>
+              </Tooltip></>
           )}
         </div>
       </HotKeys>
