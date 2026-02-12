@@ -4,7 +4,6 @@ import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
 import { DataTreeNode } from './tree/TreeNode';
-import { max } from 'lodash';
 
 
 /**
@@ -185,10 +184,13 @@ export default class DataVisualizer {
     //   )
     // }
     else { //for binary tree mode
-      // const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
-      const EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
+      const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER) - 1;
+      const EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
+      const EvanVariable3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
+      console.log(EvanVariable1);
+      console.log(EvanVariable3);
       return (
-        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin + Config.NWidth} height={treeDrawer.downCOUNTER * Config.DistanceY * 3 + topMargin}>
+        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin + Config.NWidth} height={(EvanVariable3 * Config.DistanceY * 2) + (EvanVariable3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin}>
           {layer}
         </Stage>
       );
