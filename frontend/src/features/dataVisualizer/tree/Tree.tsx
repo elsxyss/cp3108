@@ -171,14 +171,15 @@ class TreeDrawer {
         </Layer>
       );
     } 
-    if(!DataVisualizer.isBinTree&&DataVisualizer.getBinTreeMode()){
-      return (
-        <Layer>
-          <Text text={'Render binary tree only supports binary trees'} 
-          align='center' fontStyle='normal' fontSize={20} fill={"red"} />
-        </Layer>
-      )
-    }
+    //***DISABLED NON BINARY TREE WARNING */
+    // if(!DataVisualizer.isBinTree&&DataVisualizer.getBinTreeMode()){
+    //   return (
+    //     <Layer>
+    //       <Text text={'Render binary tree only supports binary trees'} 
+    //       align='center' fontStyle='normal' fontSize={20} fill={"red"} />
+    //     </Layer>
+    //   )
+    // }
     else {
       this.drawNode(this.tree.rootNode, x, y, x, y,0, 0,0);
       this.width = ( this.getNodeWidth(this.tree.rootNode) - this.minX );
@@ -270,7 +271,6 @@ class TreeDrawer {
       // let firstCall = false;
       node.children?.forEach((childNode, index) => {
         //const childY = childNode instanceof AlreadyParsedTreeNode ? y : y + Config.DistanceY;
-
         let myY;
         let myX;
         const scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth + 1) / 

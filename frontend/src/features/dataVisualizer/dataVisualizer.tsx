@@ -4,6 +4,7 @@ import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
 import { DataTreeNode } from './tree/TreeNode';
+import { max } from 'lodash';
 
 
 /**
@@ -24,6 +25,7 @@ export default class DataVisualizer {
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
   public static isBinTree: boolean = false;
+  private static nodeCount:number[]=[];
 
   private steps: Step[] = [];
   private nodeLabel = 0;
@@ -31,17 +33,27 @@ export default class DataVisualizer {
 
   private constructor() {}
 
-  public static get_depth(structures: Data[]): number { //works assuming is a binary tree
-    let depth=0;
+  public static get_depth(structures: Data[], depth:number,nodePos:number): number { //works assuming is a binary tree
+    //let depth=0;
     if (!(structures instanceof Array)||structures[0]===null){
+      //nodeCount keeps track of the nodes with the most number of elements at each depth
+      if (this.nodeCount.length<depth){
+        this.nodeCount.push(nodePos);
+      }
+      else{
+        this.nodeCount[depth]=Math.max(this.nodeCount[depth],nodePos);
+      }
       return 0;
     }
+
     else{
-      if (!(structures[0] instanceof Array && structures[1] instanceof Array)){
-        depth++;
+      if (structures.length!=3){
+        structures.push(nodePos);
       }
-      depth+=Math.max(this.get_depth(structures[0]), this.get_depth(structures[1][0]));
-      console.log(depth);
+      console.log("n:"+structures[0]+" d:"+depth);
+      this.binaryTreeDepth=Math.max(this.binaryTreeDepth,depth);
+      this.get_depth(structures[0],depth+1, 0);
+      this.get_depth(structures[1],depth,nodePos+1);
       return depth;
 
     }
@@ -89,9 +101,14 @@ export default class DataVisualizer {
       throw new Error('Data visualizer not initialized');
     }
     DataVisualizer.isBinTree=this.isBinaryTree(structures);
-    if (DataVisualizer.isBinTree){
-      DataVisualizer.binaryTreeDepth = this.get_depth(structures[0]);
+    if (DataVisualizer.treeMode||DataVisualizer.BinTreeMode){
+      this.get_depth(structures[0],0,0);
+      console.log('Binary tree depth: ' + DataVisualizer.binaryTreeDepth);
+      console.log(structures);
+      console.log(this.nodeCount);
+    
     }
+
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
@@ -99,6 +116,7 @@ export default class DataVisualizer {
 
   public static clear(): void {
     DataVisualizer._instance = new DataVisualizer();
+    this.nodeCount=[];
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
   }
 
@@ -158,13 +176,14 @@ export default class DataVisualizer {
         </Stage>
       );
     }
-    if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
-      return (
-        <Stage key={xs} width={400} height={100}>
-          {layer}
-        </Stage>
-      )
-    }
+    //****DISASBLED NON BINARY TREE WARNING */
+    // if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
+    //   return (
+    //     <Stage key={xs} width={400} height={100}>
+    //       {layer}
+    //     </Stage>
+    //   )
+    // }
     else { //for binary tree mode
       // const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
       const EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
@@ -175,11 +194,6 @@ export default class DataVisualizer {
       );
     }
     
-    return (
-      <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
-        {layer}
-      </Stage>
-    );
   }
   static redraw(){
     this.clear();
