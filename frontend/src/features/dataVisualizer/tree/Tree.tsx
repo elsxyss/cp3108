@@ -185,15 +185,14 @@ class TreeDrawer {
       this.width = ( this.getNodeWidth(this.tree.rootNode) - this.minX );
       this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
 
-      // me added
-      const EvanVariable1 = Math.max(this.leftCOUNTER, this.rightCOUNTER); 
+      let EvanVariable1 = Math.max(this.leftCOUNTER, this.rightCOUNTER); 
       let EvanVariable2;
       if (EvanVariable1 == 0) {
         EvanVariable2 = EvanVariable1;
       } else {
-        EvanVariable2 = 2 * (Math.pow(2, DataVisualizer.binaryTreeDepth) - 1);
+        EvanVariable1 = EvanVariable1 - 1;
+        EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
       }
-
       return (
         <Layer key={x + ', ' + y} offsetX={-(EvanVariable2 * Config.NWidth)} offsetY={this.minY}>
           {this.drawables}
@@ -273,8 +272,10 @@ class TreeDrawer {
         //const childY = childNode instanceof AlreadyParsedTreeNode ? y : y + Config.DistanceY;
         let myY;
         let myX;
-        const scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth + 1) / 
-                                    Math.pow(2, (Math.round(y / (Config.DistanceY * 2)))) );
+        let scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth) / 
+                                  Math.pow(2, (Math.round(y / (Config.BoxHeight * 6)))) );
+        scalerV--;
+
         if (index == 0 && y == parentY + Config.DistanceY) { // NEW left branch
           myY = y + Config.DistanceY * 2;
           myX = x - Config.NWidth * scalerV;
