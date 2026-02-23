@@ -21,6 +21,7 @@ export default class DataVisualizer {
   private static _instance = new DataVisualizer();
   public static treeMode: boolean = false;
   public static BinTreeMode: boolean = false;
+  public static normalMode: boolean = true;
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
   public static isBinTree: boolean = false;
@@ -36,23 +37,25 @@ export default class DataVisualizer {
     //let depth=0;
     if (!(structures instanceof Array)||structures[0]===null){
       //nodeCount keeps track of the nodes with the most number of elements at each depth
-      if (this.nodeCount.length<depth){
+      if (this.nodeCount.length<=depth){
         this.nodeCount.push(nodePos);
       }
       else{
         this.nodeCount[depth]=Math.max(this.nodeCount[depth],nodePos);
       }
+      console.log("end: "+"nodeCount:"+nodePos+" d:"+depth);
+      console.log(this.nodeCount);
       return 0;
     }
 
     else{
-      if (structures.length!=3){
-        structures.push(nodePos);
-      }
       console.log("n:"+structures[0]+" d:"+depth);
       this.binaryTreeDepth=Math.max(this.binaryTreeDepth,depth);
       this.get_depth(structures[0],depth+1, 0);
       this.get_depth(structures[1],depth,nodePos+1);
+      if (structures.length!=3){
+        structures.push(nodePos);
+      }
       return depth;
 
     }
@@ -87,12 +90,20 @@ export default class DataVisualizer {
     DataVisualizer.treeMode = !DataVisualizer.treeMode;
   }
 
+  public static toggleNormalMode(): void {
+    DataVisualizer.normalMode = !DataVisualizer.normalMode;
+  }
+
   public static getBinTreeMode(): boolean {
     return DataVisualizer.BinTreeMode;
   }
 
   public static getTreeMode(): boolean {
     return DataVisualizer.treeMode;
+  }
+
+  public static getNormalMode(): boolean {
+    return DataVisualizer.normalMode;
   }
 
   public static drawData(structures: Data[]): void {
@@ -116,6 +127,7 @@ export default class DataVisualizer {
   public static clear(): void {
     DataVisualizer._instance = new DataVisualizer();
     this.nodeCount=[];
+    this.binaryTreeDepth=0;
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
   }
 
@@ -158,14 +170,7 @@ export default class DataVisualizer {
     //   layer=treeLayer;
     // }
     // me added, below is + leftMargin for default extra space on the right, and + one node width cuz gotta include the very root node
-    
-    if (DataVisualizer.counter == 1) {
-      return (
-        <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
-          {layer}
-        </Stage>
-      );
-    }
+
 
     //for general tree mode
     if (DataVisualizer.treeMode){
@@ -183,7 +188,7 @@ export default class DataVisualizer {
     //     </Stage>
     //   )
     // }
-    else { //for binary tree mode
+    if (DataVisualizer.getBinTreeMode()) { //for binary tree mode
       const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER) - 1;
       const EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
       const EvanVariable3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
@@ -191,6 +196,13 @@ export default class DataVisualizer {
       console.log(EvanVariable3);
       return (
         <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin + Config.NWidth} height={(EvanVariable3 * Config.DistanceY * 2) + (EvanVariable3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin}>
+          {layer}
+        </Stage>
+      );
+    }    
+    else {
+      return (
+        <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
           {layer}
         </Stage>
       );
