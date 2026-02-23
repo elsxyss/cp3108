@@ -138,12 +138,36 @@ class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchP
             <DataVisualizerDefaultText />
           )}
           {this.state.steps.length > 0 && (
-            <><Tooltip content="Render Binary Tree" position="top">
+            <><Tooltip content="Original View" position="top">
+                <AnchorButton
+                  style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}
+                  onMouseUp={() => {
+                    if (DataVisualizer.getBinTreeMode()){
+                      DataVisualizer.toggleBinTreeMode();
+                    }
+                    if (DataVisualizer.getTreeMode()){
+                      DataVisualizer.toggleTreeMode();
+                    }
+                    DataVisualizer.toggleNormalMode();
+                    DataVisualizer.redraw();
+                  } }
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Icon icon="grid-view" />
+                    <Checkbox
+                      checked={DataVisualizer.getNormalMode()}
+                      style={{ marginTop: 7 }} />
+                  </div>
+                </AnchorButton>
+              </Tooltip><Tooltip content="Render Binary Tree" position="top">
               <AnchorButton
-                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}
+                style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginLeft: 10}}
                 onMouseUp={() => {
                   if (DataVisualizer.getTreeMode()){
-                    return
+                    DataVisualizer.toggleTreeMode();
+                  }
+                  if (DataVisualizer.getNormalMode()){
+                    DataVisualizer.toggleNormalMode();
                   }
                   DataVisualizer.toggleBinTreeMode();
                   DataVisualizer.redraw();
@@ -161,7 +185,10 @@ class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchP
                   style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' , marginLeft: 10}}
                   onMouseUp={() => {
                     if (DataVisualizer.getBinTreeMode()){
-                      return
+                      DataVisualizer.toggleBinTreeMode();
+                    }
+                    if (DataVisualizer.getNormalMode()){
+                      DataVisualizer.toggleNormalMode();
                     }
                     DataVisualizer.toggleTreeMode();
                     DataVisualizer.redraw();
@@ -175,6 +202,7 @@ class SideContentDataVisualizerBase extends React.Component<OwnProps & DispatchP
                   </div>
                 </AnchorButton>
               </Tooltip></>
+              
           )}
         </div>
       </HotKeys>
