@@ -73,11 +73,9 @@ export class Tree {
       visitedStructures.set(tree, node);
       treeNodes[nodeCount] = node;
       nodeCount++;
-      
+      //console.log(tree);
+
       // Done like that instead of in constructor to prevent infinite recursion
-      if (typeof tree[tree.length-1] == 'number' && (DataVisualizer.getBinTreeMode()||DataVisualizer.getTreeMode())){
-        node.nodePos=tree.pop();
-      }
       node.children = tree.map(constructNode);
 
       return node;
