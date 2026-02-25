@@ -74,10 +74,10 @@ export class Tree {
       treeNodes[nodeCount] = node;
       nodeCount++;
       
-      // Done like that instead of in constructor to prevent infinite recursion
       if (typeof tree[tree.length-1] == 'number' && (DataVisualizer.getBinTreeMode()||DataVisualizer.getTreeMode())){
         node.nodePos=tree.pop();
       }
+      // Done like that instead of in constructor to prevent infinite recursion
       node.children = tree.map(constructNode);
 
       return node;
