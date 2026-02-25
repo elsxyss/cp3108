@@ -35,30 +35,30 @@ export default class DataVisualizer {
 
   public static get_depth(structures: Data[], depth:number,nodePos:number): number { //works assuming is a binary tree
     //let depth=0;
-    if (!(structures instanceof Array)||structures[0]===null){
-      //nodeCount keeps track of the nodes with the most number of elements at each depth
-      if (this.nodeCount.length<=depth){
-        this.nodeCount.push(nodePos);
-      }
-      else{
-        this.nodeCount[depth]=Math.max(this.nodeCount[depth],nodePos);
-      }
-      console.log("end: "+"nodeCount:"+nodePos+" d:"+depth);
-      console.log(this.nodeCount);
+    if (!(structures instanceof Array)){
       return 0;
     }
+    structures.push(nodePos);
+    if (structures[1]===null){
+      //nodeCount keeps track of the most number of elements at each dept
+      console.log(this.nodeCount);
+      if (this.nodeCount[depth]===undefined){
+        this.nodeCount[depth]=0;
+      }
+      this.nodeCount[depth]=Math.max(this.nodeCount[depth],nodePos);
+      //console.log(structures);
+      console.log(this.nodeCount);
+      console.log("end: "+"nodePos:"+nodePos+" d:"+depth);
+      console.log(this.nodeCount);
+    }
 
-    else{
       console.log("n:"+structures[0]+" d:"+depth);
       this.binaryTreeDepth=Math.max(this.binaryTreeDepth,depth);
       this.get_depth(structures[0],depth+1, 0);
       this.get_depth(structures[1],depth,nodePos+1);
-      if (structures.length!=3){
-        structures.push(nodePos);
-      }
       return depth;
 
-    }
+    
   }
   public static isBinaryTree(structures: Data[]): boolean {
     if (structures[0]===null){
