@@ -175,7 +175,7 @@ class TreeDrawer {
         </Layer>
       );
     } 
-    // NON BINARY TREE WARNING
+    // NON-BINARY TREE WARNING
     if(!DataVisualizer.isBinTree&&DataVisualizer.getBinTreeMode()){
       return (
         <Layer>

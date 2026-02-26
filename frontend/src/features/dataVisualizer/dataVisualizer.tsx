@@ -183,7 +183,7 @@ export default class DataVisualizer {
         </Stage>
       );
     }
-    // NON BINARY TREE WARNING
+    // NON-BINARY TREE WARNING
     if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
       return (
         <Stage key={xs} width={400} height={100}>
