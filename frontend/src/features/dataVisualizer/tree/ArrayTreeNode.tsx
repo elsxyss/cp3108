@@ -8,7 +8,7 @@ import { DrawableTreeNode } from './DrawableTreeNode';
  * Represents a node corresponding to a Source pair or array.
  */
 export class ArrayTreeNode extends DrawableTreeNode {
-  Colors: string []= ["black","#d81d1d", "#9a10e4", "#1525d4", "#448e4c", "#e6d814"];
+  Colors: string []= ["black","#d81d1d", "#e46510", "#259530", "#27d6e6", "#0d54ed", "#5a10d1", "#e6148f", "#870854"];
   createDrawable(x: number, y: number, parentX: number, parentY: number, colorIndex: number): JSX.Element {
     let color="";
     // if (!partOfNode){
