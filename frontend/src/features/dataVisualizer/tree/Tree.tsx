@@ -175,15 +175,14 @@ class TreeDrawer {
         </Layer>
       );
     } 
-    //***DISABLED NON BINARY TREE WARNING */
-    // if(!DataVisualizer.isBinTree&&DataVisualizer.getBinTreeMode()){
-    //   return (
-    //     <Layer>
-    //       <Text text={'Render binary tree only supports binary trees'} 
-    //       align='center' fontStyle='normal' fontSize={20} fill={"red"} />
-    //     </Layer>
-    //   )
-    // }
+    // NON BINARY TREE WARNING
+    if(!DataVisualizer.isBinTree&&DataVisualizer.getBinTreeMode()){
+      return (
+        <Layer>
+          <Text text={'Render binary tree only supports binary trees'} align='center' fontStyle='normal' fontSize={20} fill={"red"} />
+        </Layer>
+      )
+    }
     else {
       if (DataVisualizer.getBinTreeMode()) { // RenderBinaryTree
         this.drawNode(this.tree.rootNode, x, y, x, y, 0, 0, 0, 0);
