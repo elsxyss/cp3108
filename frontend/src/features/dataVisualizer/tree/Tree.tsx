@@ -327,7 +327,7 @@ class TreeDrawer {
             this.runningY = myY;
           }
 
-          this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, colorIndex, colorIndex, 0, 0); // leftX, childY
+          this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, colorIndex, colorIndex, 0, 0);
         });
       }
       else if (DataVisualizer.getTreeMode()) {  // RenderGeneralTree
@@ -341,7 +341,7 @@ class TreeDrawer {
         node.children?.forEach((childNode, index) => {
           let myY;
           let myX;
-          let scalerV = Math.round( Math.pow(longest, DataVisualizer.binaryTreeDepth) / 
+          const scalerV = Math.round( Math.pow(longest, DataVisualizer.binaryTreeDepth) / 
                                     Math.pow(longest, (Math.round(y / (Config.BoxHeight * 4))) + 1) );
         
           /*
@@ -378,7 +378,7 @@ class TreeDrawer {
             }
           }
 
-          this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, colorIndex, colorIndex, originIndex, originX); // leftX, childY
+          this.drawNode(childNode, myX, myY, x + Config.BoxWidth * index, y, colorIndex, colorIndex, originIndex, originX);
         });
       }
       else { // OriginalView
