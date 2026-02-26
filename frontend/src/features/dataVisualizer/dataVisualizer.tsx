@@ -25,7 +25,7 @@ export default class DataVisualizer {
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
   public static isBinTree: boolean = false;
-  private static nodeCount:number[]=[];
+  public static nodeCount:number[]=[];
 
   private steps: Step[] = [];
   private nodeLabel = 0;
@@ -82,14 +82,17 @@ export default class DataVisualizer {
     DataVisualizer.setSteps = setSteps;
   }
 
+  // RenderBinaryTree
   public static toggleBinTreeMode(): void {
     DataVisualizer.BinTreeMode = !DataVisualizer.BinTreeMode;
   }
 
+  // RenderGeneralTree
   public static toggleTreeMode(): void {
     DataVisualizer.treeMode = !DataVisualizer.treeMode;
   }
 
+  // OriginalView
   public static toggleNormalMode(): void {
     DataVisualizer.normalMode = !DataVisualizer.normalMode;
   }
@@ -173,7 +176,7 @@ export default class DataVisualizer {
 
 
     //for general tree mode
-    if (DataVisualizer.treeMode){
+    if (DataVisualizer.normalMode){
       return (
         <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
           {layer}
@@ -188,19 +191,27 @@ export default class DataVisualizer {
     //     </Stage>
     //   )
     // }
-    if (DataVisualizer.getBinTreeMode()) { //for binary tree mode
+    if (DataVisualizer.getBinTreeMode()) { // RenderBinaryTree
       const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER) - 1;
       const EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
       const EvanVariable3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
-      console.log(EvanVariable1);
-      console.log(EvanVariable3);
       return (
-        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin + Config.NWidth} height={(EvanVariable3 * Config.DistanceY * 2) + (EvanVariable3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin}>
+        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin * 2 + Config.NWidth} height={(EvanVariable3 * Config.DistanceY * 2) + (EvanVariable3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin * 2}>
           {layer}
         </Stage>
       );
-    }    
-    else {
+    }
+    else if (DataVisualizer.getTreeMode()) { // RenderGeneralTree
+      const longest = DataVisualizer.nodeCount[0];
+      const EvanVariable2 = (Config.NWidth + Config.BoxWidth) * (longest + 1) * Math.pow(longest, DataVisualizer.binaryTreeDepth) - Config.BoxWidth; // GP Term, minus extra blank space of box width at the end
+      const EvanVariable3 = treeDrawer.downCOUNTER;
+      return (
+        <Stage key={xs} width={(EvanVariable2) + leftMargin * 2} height={(EvanVariable3 * Config.BoxHeight * 4) + Config.BoxHeight + topMargin * 2}>
+          {layer}
+        </Stage>
+      );
+    }
+    else { // OriginalView
       return (
         <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
           {layer}
