@@ -183,14 +183,14 @@ export default class DataVisualizer {
         </Stage>
       );
     }
-    //****DISASBLED NON BINARY TREE WARNING */
-    // if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
-    //   return (
-    //     <Stage key={xs} width={400} height={100}>
-    //       {layer}
-    //     </Stage>
-    //   )
-    // }
+    // NON-BINARY TREE WARNING
+    if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
+      return (
+        <Stage key={xs} width={400} height={100}>
+           {layer}
+         </Stage>
+      )
+    }
     if (DataVisualizer.getBinTreeMode()) { // RenderBinaryTree
       const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER) - 1;
       const EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
