@@ -4,6 +4,7 @@ import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
 import { DataTreeNode } from './tree/TreeNode';
+import { is } from 'immer/dist/internal.js';
 
 
 /**
@@ -18,6 +19,8 @@ export default class DataVisualizer {
   private static counter = 1;
   private static empty(step: Step[]) {}
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
+  private static dataRecords: Data[] = [];
+  private static isRedraw: boolean = false;
   private static _instance = new DataVisualizer();
   public static treeMode: boolean = false;
   public static BinTreeMode: boolean = false;
@@ -112,6 +115,9 @@ export default class DataVisualizer {
   public static drawData(structures: Data[]): void {
     if (!DataVisualizer.setSteps) {
       throw new Error('Data visualizer not initialized');
+    }
+    if (!DataVisualizer.isRedraw){
+      this.dataRecords.push(structures);
     }
     DataVisualizer.isBinTree=this.isBinaryTree(structures);
     if (DataVisualizer.treeMode||DataVisualizer.BinTreeMode){
@@ -221,9 +227,11 @@ export default class DataVisualizer {
     
   }
   static redraw(){
+    this.isRedraw=true;
     this.clear();
     DataVisualizer.counter = - DataVisualizer.counter;
-    return this.drawData(this.dataList);
+    return DataVisualizer.dataRecords.map(structures => this.drawData(structures));
+    //return this.drawData(this.dataList);
   }
 
 }
