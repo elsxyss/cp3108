@@ -4,8 +4,6 @@ import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
 import { DataTreeNode } from './tree/TreeNode';
-import { is } from 'immer/dist/internal.js';
-
 
 /**
  * The data visualizer class.
