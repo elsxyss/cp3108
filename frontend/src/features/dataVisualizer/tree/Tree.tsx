@@ -289,7 +289,7 @@ class TreeDrawer {
 
     // draws the content
     if (node instanceof FunctionTreeNode) {
-      const drawable = node.createDrawable(x, y, parentX, parentY);
+      const drawable = node.createDrawable(x, y, parentX, parentY, 0);
       this.drawables.push(drawable);
     } else if (node instanceof ArrayTreeNode) {
       if (DataVisualizer.getBinTreeMode()) { // RenderBinaryTree

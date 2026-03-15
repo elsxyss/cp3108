@@ -41,9 +41,9 @@ This is the general tree view mode which shows the tree representation (left ali
 ### `nodePos`, `depth` (in `dataVisualizer.tsx`)
 The input data is initially iterated through once to get the nodePos and the maximum depth of the tree. `nodePos` represents the position of the box within the node, and will be stored as a field in `BaseTreeNode.ts`. 
 
-(... on depth)
+The depth is calculated through traversing the input array. Whenever the first element of the array is another nested array, the recursion increases the depth by 1. When `get_depth` reaches the end of the recursion, the final depth of that branch is compared to the maximum depth of the tree and the maximum depth is updated accordingly.
 
-(also one more on nodeCount?)
+nodeCount is an array that is used to keep track the largest node (ie. the node with the most number of boxes) for each level. Currently, it is used for spacing purposes to ensure that there the spacing between nodes account for the worst case scenario whereby all nodes have the size of the largest node. This field may be changed in the future as we explore more space efficient ways to space out the nodes.
 
 ### `scalerV` (in `Tree.tsx`)
 For the Binary Tree mode, in order to make the tree appear compact, the horizontal spacing between distinct node groups should be inversely proportional to level of these node groups, i.e. the larger / deeper the level in the tree, the closer the node groups.
@@ -112,6 +112,7 @@ In original mode, `colorIndex` is set to 0, resulting in all boxes being black.
 The input data would be checked to ensure that it is a binary tree using `isBinaryTree()`. This is done by recursively checking if every node is made up of 3 boxes. If the given input is not a binary tree and the binary tree mode is selected, an error would be shown.
 
 ### General Tree mode
+The input array would be iterated through to ensure that the length of nested arrays, checking if their size exceed 2. This is because trees are list, and lists are stored as pairs, hence the size of the input array and nested arrays should be less than 2.
 
 ## `dataRecords`
 Keeps a copy of all inputs to ensure that when another mode is chosen, all the instances of draw_data is redrawn.
