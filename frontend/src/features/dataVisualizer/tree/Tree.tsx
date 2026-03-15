@@ -291,7 +291,7 @@ class TreeDrawer {
           let myY;
           let myX;
           let scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth) / 
-                                    Math.pow(2, (Math.round(y / (Config.BoxHeight * 6)))) );
+                                    Math.pow(2, (Math.round(y / (6 * Config.BoxHeight)))) );
           scalerV--;
 
           if (index == 0 && y == parentY + Config.DistanceY) { // NEW left branch

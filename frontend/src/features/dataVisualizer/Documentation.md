@@ -55,8 +55,11 @@ colorIndex=TreeDrawer.colorCounter;<br>
 Since scalerV should be inversely proportional to the level of the node groups, the calculation for scalerV is equivalent to:
 - 2<sup>depth of tree</sup> divided by 2<sup>current level</sup>
 
-This way, as the current level increases (going down the tree), the resultant scalerV decreases. We use a power of 2 to appropriately space the binary tree, given that each node group can have 2 subtrees.
+This way, as the current level increases (going down the tree), the resultant scalerV decreases. The current level can be determined by dividing the y value of the box to be rendered by 6 * Config.BoxHeight, which is the amount of height used by each node group + vertical spacing between levels.<br>
+Powers of 2 are used to appropriately space the binary tree, given that each node group can have 2 subtrees.
 
+Equation for scalerV:
+> scalerV = Math.round(Math.pow(2, DataVisualizer.binaryTreeDepth) / Math.pow(2, (Math.round(y / (6 * Config.BoxHeight)))));
 
 ### `leftCOUNTER`, `rightCOUNTER`, `downCOUNTER`  (in `Tree.tsx`)
 For the Binary Tree mode, it is necessary to identify how far the tree stretches left / right away from the centre (the root node), in order to generate sufficient space to show the tree in the visualizer itself. 
