@@ -189,16 +189,15 @@ class TreeDrawer {
         this.width = ( this.getNodeWidth(this.tree.rootNode) - this.minX );
         this.height = ( this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth );
 
-        let EvanVariable1 = Math.max(this.leftCOUNTER, this.rightCOUNTER); 
-        let EvanVariable2;
-        if (EvanVariable1 == 0) {
-          EvanVariable2 = EvanVariable1;
+        const EY1 = Math.max(this.leftCOUNTER, this.rightCOUNTER); 
+        let EY2;
+        if (EY1 == 0) {
+          EY2 = EY1;
         } else {
-          EvanVariable1 = EvanVariable1 - 1;
-          EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
+          EY2 = 2 * (Math.pow(2, EY1 - 1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
         }
         return (
-          <Layer key={x + ', ' + y} offsetX={-(EvanVariable2 * Config.NWidth)} offsetY={this.minY}>
+          <Layer key={x + ', ' + y} offsetX={-(EY2 * Config.NWidth)} offsetY={this.minY}>
             {this.drawables}
           </Layer>
         );
