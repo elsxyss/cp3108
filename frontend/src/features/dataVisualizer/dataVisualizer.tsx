@@ -3,7 +3,7 @@ import {Stage } from 'react-konva';
 import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
-import { ArrayTreeNode, DataTreeNode } from './tree/TreeNode';
+import { DataTreeNode } from './tree/TreeNode';
 
 /**
  * The data visualizer class.
@@ -89,8 +89,7 @@ export default class DataVisualizer {
     if (structures.length > 2 || (!(structures[1] instanceof Array) && structures[1] != null)) {
       return false;
     }
-    // Ensure the return value is always a boolean primitive
-    return Boolean(this.isGeneralTree(structures[1])) && Boolean(this.isGeneralTree(structures[0]));
+    return this.isGeneralTree(structures[1]) && this.isGeneralTree(structures[0]);
   }
 
   public static init(setSteps: (step: Step[]) => void): void {
@@ -131,7 +130,7 @@ export default class DataVisualizer {
     if (!DataVisualizer.isRedraw){
       this.dataRecords.push(structures);
     }
-    console.log(this.isBinaryTree(structures));
+    console.log(structures);
     DataVisualizer.isBinTree=this.isBinaryTree(structures);
     DataVisualizer.isGenTree=this.isGeneralTree(structures);
       this.get_depth(structures[0],0,0);
