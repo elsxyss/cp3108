@@ -14,6 +14,7 @@ import {
   FunctionTreeNode,
   TreeNode
 } from './TreeNode';
+import { Data } from 'phaser';
 
 /**
  *  A tree object built based on the given Data, Function or Array of
@@ -74,9 +75,9 @@ export class Tree {
       treeNodes[nodeCount] = node;
       nodeCount++;
       
-      if (typeof tree[tree.length-1] == 'number'){
-        node.nodePos=tree.pop();
-      }
+      // if (typeof tree[tree.length-1] == 'number'&&DataVisualizer.getTreeMode()) {
+      //   node.nodePos=tree.pop();
+      // }
       //console.log(tree);
       //node.nodePos=nodeCount;
       // Done like that instead of in constructor to prevent infinite recursion
@@ -299,7 +300,7 @@ class TreeDrawer {
         node.children?.forEach((childNode, index) => {
           let myY;
           let myX;
-          let scalerV = Math.round( Math.pow(2, DataVisualizer.binaryTreeDepth) / 
+          let scalerV = Math.round( Math.pow(2, DataVisualizer.TreeDepth) / 
                                     Math.pow(2, (Math.round(y / (6 * Config.BoxHeight)))) );
           scalerV--;
 
@@ -344,12 +345,12 @@ class TreeDrawer {
 
         const longest = DataVisualizer.nodeCount[0]; // e.g. 3
         this.runningX2 = (Config.NWidth + Config.BoxWidth) * (longest + 1);
-        this.downCOUNTER = DataVisualizer.binaryTreeDepth;
+        this.downCOUNTER = DataVisualizer.TreeDepth;
 
         node.children?.forEach((childNode, index) => {
           let myY;
           let myX;
-          const scalerV = Math.round( Math.pow(longest, DataVisualizer.binaryTreeDepth) / 
+          const scalerV = Math.round( Math.pow(longest, DataVisualizer.TreeDepth) / 
                                     Math.pow(longest, (Math.round(y / (Config.BoxHeight * 4))) + 1) );
         
           /*

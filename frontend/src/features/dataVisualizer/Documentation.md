@@ -63,7 +63,7 @@ This way, as the current level increases (going down the tree), the resultant sc
 Powers of 2 are used to appropriately space the binary tree, given that each node group can have 2 subtrees.
 
 Equation for scalerV:
-> scalerV = Math.round(Math.pow(2, DataVisualizer.binaryTreeDepth) / Math.pow(2, (Math.round(y / (6 * Config.BoxHeight)))));
+> scalerV = Math.round(Math.pow(2, DataVisualizer.TreeDepth) / Math.pow(2, (Math.round(y / (6 * Config.BoxHeight)))));
 
 ### `leftCOUNTER`, `rightCOUNTER`, `downCOUNTER`  (in `Tree.tsx`)
 For the Binary Tree mode, it is necessary to identify how far the tree stretches left / right away from the centre (the root node), in order to generate sufficient space to show the tree in the visualizer itself. 
@@ -90,7 +90,7 @@ Thus, to calculate how much offset is required before generating the tree, it is
 For General Tree mode, as the tree is left-aligned, the only consideration required is the possible maximum width of the entire tree. Using the largest `nodeCount` ("L"), we can proactively generate a visual canvas that is sufficiently wide to accomodate any possible arrangement of branches throughout the tree.<br>
 This largest width is equivalent to the n<sup>th</sup> term of a finite geometric progression with first term (L+1), common ratio L, and n terms (where n = the depth of the tree). Hence, using the formula for the n<sup>th</sup> term of a finate geometric progression, we get the following equation for EY4:
 > *L = DataVisualizer.nodeCount[0];*<br>
-> *EY4 = (Config.NWidth + Config.BoxWidth) * (L + 1) * Math.pow(L, DataVisualizer.binaryTreeDepth) - Config.BoxWidth;*
+> *EY4 = (Config.NWidth + Config.BoxWidth) * (L + 1) * Math.pow(L, DataVisualizer.TreeDepth) - Config.BoxWidth;*
 
 ## Coloring
 All boxes belonging to the same node would be the same color. The coloring mechanism uses two key variables: `TreeDrawer.colorCounter` and `colorIndex`.
