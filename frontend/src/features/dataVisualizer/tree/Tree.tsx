@@ -74,11 +74,11 @@ export class Tree {
       treeNodes[nodeCount] = node;
       nodeCount++;
       
-      if (typeof tree[tree.length-1] == 'number' && (DataVisualizer.getBinTreeMode()||DataVisualizer.getTreeMode())){
+      if (typeof tree[tree.length-1] == 'number'){
         node.nodePos=tree.pop();
       }
       //console.log(tree);
-
+      //node.nodePos=nodeCount;
       // Done like that instead of in constructor to prevent infinite recursion
       node.children = tree.map(constructNode);
 
@@ -180,6 +180,15 @@ class TreeDrawer {
       return (
         <Layer>
           <Text text={'Render binary tree only supports binary trees'} align='center' fontStyle='normal' fontSize={20} fill={"red"} />
+        </Layer>
+      )
+    }
+    // NON-GENERAL TREE WARNING
+    else if(!DataVisualizer.isGenTree&&DataVisualizer.getTreeMode()){
+      console.log("Not general tree");
+      return (
+        <Layer>
+          <Text text={'Render general tree only supports trees'} align='center' fontStyle='normal' fontSize={20} fill={"red"} />
         </Layer>
       )
     }
@@ -381,6 +390,7 @@ class TreeDrawer {
         });
       }
       else { // OriginalView
+        console.log(node);
         const drawable = node.createDrawable(x, y, parentX, parentY, 0);
         this.drawables.push(drawable);
         let leftX = x;

@@ -3,7 +3,7 @@ import {Stage } from 'react-konva';
 import { Config } from './Config';
 import { Data, Step } from './dataVisualizerTypes';
 import { Tree } from './tree/Tree';
-import { DataTreeNode } from './tree/TreeNode';
+import { ArrayTreeNode, DataTreeNode } from './tree/TreeNode';
 
 /**
  * The data visualizer class.
@@ -26,7 +26,9 @@ export default class DataVisualizer {
   private static dataList: Data []=[]; 
   public static binaryTreeDepth: number = 0;
   public static isBinTree: boolean = false;
+  public static isGenTree: boolean = false;
   public static nodeCount:number[]=[];
+
 
   private steps: Step[] = [];
   private nodeLabel = 0;
@@ -61,7 +63,9 @@ export default class DataVisualizer {
 
     
   }
-  public static isBinaryTree(structures: Data[]): boolean {
+
+  //modify to check for general trees too, make sure no pairs
+  public static isBinaryTree(structures: Data[]): boolean { //modify for non trees too
     if (structures[0]===null){
       return true;
     }
@@ -78,6 +82,16 @@ export default class DataVisualizer {
     return ans&&this.isBinaryTree(structures[0][1]);
   }
 
+  public static isGeneralTree(structures: Data[]): boolean {
+    if (structures == null) {
+      return true;
+    }
+    if (structures.length > 2 || (!(structures[1] instanceof Array) && structures[1] != null)) {
+      return false;
+    }
+    // Ensure the return value is always a boolean primitive
+    return Boolean(this.isGeneralTree(structures[1])) && Boolean(this.isGeneralTree(structures[0]));
+  }
 
   public static init(setSteps: (step: Step[]) => void): void {
     DataVisualizer.setSteps = setSteps;
@@ -117,14 +131,14 @@ export default class DataVisualizer {
     if (!DataVisualizer.isRedraw){
       this.dataRecords.push(structures);
     }
+    console.log(this.isBinaryTree(structures));
     DataVisualizer.isBinTree=this.isBinaryTree(structures);
-    if (DataVisualizer.treeMode||DataVisualizer.BinTreeMode){
+    DataVisualizer.isGenTree=this.isGeneralTree(structures);
       this.get_depth(structures[0],0,0);
       console.log('Binary tree depth: ' + DataVisualizer.binaryTreeDepth);
       console.log(structures);
-      console.log(this.nodeCount);
+      console.log("nodeCount: " + this.nodeCount);
     
-    }
 
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
@@ -179,16 +193,23 @@ export default class DataVisualizer {
     // me added, below is + leftMargin for default extra space on the right, and + one node width cuz gotta include the very root node
 
 
-    //for general tree mode
+    //for normal mode
     if (DataVisualizer.normalMode){
       return (
         <Stage key={xs} width={treeDrawer.width + leftMargin} height={treeDrawer.height + topMargin}>
           {layer}
         </Stage>
-      );
+      )
     }
     // NON-BINARY TREE WARNING
     if(!DataVisualizer.isBinTree&&DataVisualizer.BinTreeMode){
+      return (
+        <Stage key={xs} width={400} height={100}>
+           {layer}
+         </Stage>
+      )
+    }
+    if (!DataVisualizer.isGenTree&&DataVisualizer.treeMode){
       return (
         <Stage key={xs} width={400} height={100}>
            {layer}
