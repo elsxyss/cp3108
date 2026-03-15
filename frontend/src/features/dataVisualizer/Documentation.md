@@ -6,6 +6,8 @@ This is the default view mode which shows only the box and pointer diagrams with
 
 <img src=./images/ORIGINAL_VIEW_IMAGE.png alt="Original Mode" width=239 height=373>
 
+> *draw_data(list(1, list(2, null, null), list(3, null, null)));*
+
 ## Binary Tree mode
 This is the binary tree view mode which shows the binary tree representation of a valid binary tree input, as per the following definition of a binary tree, and using the structure of a 3-tuple input as written in Source Academy's binary_tree module.
 - A binary tree of a certain data type is either null, or it is a **list** with **3** elements: the first being an element of that data type, and the remaining being trees of that data type.<br>
@@ -21,9 +23,9 @@ These 3 boxes are closely arranged in a triangular node group. The box containin
 
 <img src=./images/BINARY_TREE_IMAGE.png alt="Binary Tree Mode" width=705 height=314>
 
-For example, consider the above data visualisation for: 
->*draw_data(list(1, list(2, null, null), list(3, null, null)));*
+> *draw_data(list(1, list(2, null, null), list(3, null, null)));*
 
+For example, consider the above data visualisation.<br>
 The tree has a <span style="color:black">**root node**</span> with a value of 1, and it also has a left subtree and a right subtree. The <span style="color:red">**left subtree**</span> has a parent node with value 2, while the <span style="color:orange">**right subtree**</span> has a parent node with value 3.
 
 ## General Tree mode
@@ -32,6 +34,8 @@ This is the general tree view mode which shows the tree representation (left ali
 - However, for the purpose of allowing a general Data Visualizer tool, restricting to a single data type has not been strictly enforced.
 
 <img src=./images/GENERAL_TREE_IMAGE.png alt="General Tree Mode" width=835 height=180>
+
+> *draw_data(list(1, list(2, null, null), list(3, null, null)));*
 
 ## Spacing
 ### `nodePos`, `depth` (in `dataVisualizer.tsx`)
