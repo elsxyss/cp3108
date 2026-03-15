@@ -17,8 +17,8 @@ export default class DataVisualizer {
   private static counter = 1;
   private static empty(step: Step[]) {}
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
-  private static dataRecords: Data[] = [];
-  private static isRedraw: boolean = false;
+  public static dataRecords: Data[] = [];
+  public static isRedraw: boolean = false;
   private static _instance = new DataVisualizer();
   public static treeMode: boolean = false;
   public static BinTreeMode: boolean = false;
@@ -142,6 +142,12 @@ export default class DataVisualizer {
     this.dataList=structures;
     DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
+  }
+
+  public static clearWithData(): void {
+    DataVisualizer.dataRecords = [];
+    DataVisualizer.isRedraw = false;
+    DataVisualizer.clear();
   }
 
   public static clear(): void {
