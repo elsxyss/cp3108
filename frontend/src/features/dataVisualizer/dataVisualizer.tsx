@@ -196,21 +196,21 @@ export default class DataVisualizer {
       )
     }
     if (DataVisualizer.getBinTreeMode()) { // RenderBinaryTree
-      const EvanVariable1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER) - 1;
-      const EvanVariable2 = 2 * (Math.pow(2, EvanVariable1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
-      const EvanVariable3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
+      const EY1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
+      const EY2 = 2 * (Math.pow(2, EY1 - 1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
+      const EY3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
       return (
-        <Stage key={xs} width={(EvanVariable2 * Config.NWidth) * 2 + leftMargin * 2 + Config.NWidth} height={(EvanVariable3 * Config.DistanceY * 2) + (EvanVariable3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin * 2}>
+        <Stage key={xs} width={(EY2 * Config.NWidth) * 2 + leftMargin * 2 + Config.NWidth} height={(EY3 * Config.DistanceY * 2) + (EY3 * Config.BoxHeight * 2) + Config.BoxHeight * 3 + topMargin * 2}>
           {layer}
         </Stage>
       );
     }
     else if (DataVisualizer.getTreeMode()) { // RenderGeneralTree
-      const longest = DataVisualizer.nodeCount[0];
-      const EvanVariable2 = (Config.NWidth + Config.BoxWidth) * (longest + 1) * Math.pow(longest, DataVisualizer.binaryTreeDepth) - Config.BoxWidth; // GP Term, minus extra blank space of box width at the end
-      const EvanVariable3 = treeDrawer.downCOUNTER;
+      const L = DataVisualizer.nodeCount[0];
+      const EY4 = (Config.NWidth + Config.BoxWidth) * (L + 1) * Math.pow(L, DataVisualizer.binaryTreeDepth) - Config.BoxWidth; // GP Term, minus extra blank space of box width at the end
+      const EY3 = treeDrawer.downCOUNTER;
       return (
-        <Stage key={xs} width={(EvanVariable2) + leftMargin * 2} height={(EvanVariable3 * Config.BoxHeight * 4) + Config.BoxHeight + topMargin * 2}>
+        <Stage key={xs} width={(EY4) + leftMargin * 2} height={(EY3 * Config.BoxHeight * 4) + Config.BoxHeight + topMargin * 2}>
           {layer}
         </Stage>
       );
