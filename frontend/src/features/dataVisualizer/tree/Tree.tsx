@@ -1,4 +1,5 @@
 import Konva from 'konva';
+import { Data } from 'phaser';
 import { Layer, Text } from 'react-konva';
 
 import { Config } from '../Config';
@@ -14,7 +15,6 @@ import {
   FunctionTreeNode,
   TreeNode
 } from './TreeNode';
-import { Data } from 'phaser';
 
 /**
  *  A tree object built based on the given Data, Function or Array of
@@ -51,6 +51,7 @@ export class Tree {
 
   static fromSourceStructure(tree: Data): Tree {
     let nodeCount = 0;
+    const genTreeChecker = DataVisualizer.getTreeMode();
     function constructNode(structure: Data): TreeNode {
       const alreadyDrawnNode = visitedStructures.get(structure);
       if (alreadyDrawnNode !== undefined) {
@@ -75,12 +76,12 @@ export class Tree {
       treeNodes[nodeCount] = node;
       nodeCount++;
       
-      // if (typeof tree[tree.length-1] == 'number'&&DataVisualizer.getTreeMode()) {
-      //   node.nodePos=tree.pop();
-      // }
-      //console.log(tree);
-      //node.nodePos=nodeCount;
-      // Done like that instead of in constructor to prevent infinite recursion
+      if (genTreeChecker) {
+        node.nodePos = tree[tree.length - 1];
+        tree.pop();
+        console.log(node);
+      }
+      
       node.children = tree.map(constructNode);
 
       return node;
@@ -147,6 +148,8 @@ class TreeDrawer {
   private minX = 0;
   private minY = 0;
   public static colorCounter=0;
+
+  private leftMargin: integer = (Config.StrokeWidth / 2);
 
   constructor(tree: Tree) {
     this.tree = tree;
@@ -350,23 +353,10 @@ class TreeDrawer {
         node.children?.forEach((childNode, index) => {
           let myY;
           let myX;
-          const scalerV = Math.round( Math.pow(longest, DataVisualizer.TreeDepth) / 
-                                    Math.pow(longest, (Math.round(y / (Config.BoxHeight * 4))) + 1) );
-        
-          /*
-          if (node.children[1] instanceof ArrayTreeNode) {
-            if (node.children[1].children[0] instanceof ArrayTreeNode) {
-              console.log("Origin Index: " + node.children[1].nodePos + ", Value: " + node.children[1].children[0].children[0].data);
-            }
-          }
-            */
 
           if (index == 0) {
-            if (node.children[0] instanceof ArrayTreeNode) {
-              console.log("Origin Index: " + originIndex + ", Value: " + node.children[0].children[0].data);
-            }
             myY = y + Config.DistanceY * 2;
-            myX = originX + (Config.NWidth + Config.BoxWidth) * (longest + 1) * (originIndex - 1) * scalerV;
+            myX = originX;
             TreeDrawer.colorCounter++;
             colorIndex = TreeDrawer.colorCounter;
           } else {
@@ -382,8 +372,8 @@ class TreeDrawer {
 
           if (node.children[1] instanceof ArrayTreeNode) {
             if (node.children[1].children[0] instanceof ArrayTreeNode) {
-              originIndex = node.children[1].nodePos;
-              originX = myX - (Config.NWidth + Config.BoxWidth) * originIndex;
+              originIndex = node.children[1].children[0].nodePos;
+              originX = 0 + this.leftMargin + (Config.NWidth + Config.BoxWidth) * originIndex;
             }
           }
 
@@ -391,7 +381,6 @@ class TreeDrawer {
         });
       }
       else { // OriginalView
-        console.log(node);
         const drawable = node.createDrawable(x, y, parentX, parentY, 0);
         this.drawables.push(drawable);
         let leftX = x;

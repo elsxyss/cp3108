@@ -17,8 +17,8 @@ export default class DataVisualizer {
   private static counter = 1;
   private static empty(step: Step[]) {}
   private static setSteps: (step: Step[]) => void = DataVisualizer.empty;
-  private static dataRecords: Data[] = [];
-  private static isRedraw: boolean = false;
+  public static dataRecords: Data[] = [];
+  public static isRedraw: boolean = false;
   private static _instance = new DataVisualizer();
   public static treeMode: boolean = false;
   public static BinTreeMode: boolean = false;
@@ -28,6 +28,7 @@ export default class DataVisualizer {
   public static isBinTree: boolean = false;
   public static isGenTree: boolean = false;
   public static nodeCount:number[]=[];
+  public static longestNodePos: number = 0;
 
 
   private steps: Step[] = [];
@@ -47,6 +48,9 @@ export default class DataVisualizer {
         this.nodeCount[depth]=0;
       }
       structures.push(this.nodeCount[depth]);
+      if (this.nodeCount[depth] > this.longestNodePos) {
+        this.longestNodePos = this.nodeCount[depth];
+      }
       this.nodeCount[depth]++;
     }
 
@@ -138,6 +142,13 @@ export default class DataVisualizer {
     DataVisualizer.setSteps(DataVisualizer._instance.steps);
   }
 
+  public static clearWithData(): void {
+    this.longestNodePos = 0;
+    DataVisualizer.dataRecords = [];
+    DataVisualizer.isRedraw = false;
+    DataVisualizer.clear();
+  }
+
   public static clear(): void {
     DataVisualizer._instance = new DataVisualizer();
     this.nodeCount=[];
@@ -220,8 +231,8 @@ export default class DataVisualizer {
       );
     }
     else if (DataVisualizer.getTreeMode()) { // RenderGeneralTree
-      const L = DataVisualizer.nodeCount[0];
-      const EY4 = (Config.NWidth + Config.BoxWidth) * (L + 1) * Math.pow(L, DataVisualizer.TreeDepth) - Config.BoxWidth; // GP Term, minus extra blank space of box width at the end
+      //const L = DataVisualizer.nodeCount[0];
+      const EY4 = (Config.NWidth + Config.BoxWidth) * (DataVisualizer.longestNodePos + 1) - Config.BoxWidth;
       const EY3 = treeDrawer.downCOUNTER;
       return (
         <Stage key={xs} width={(EY4) + leftMargin * 2} height={(EY3 * Config.BoxHeight * 4) + Config.BoxHeight + topMargin * 2}>
@@ -239,6 +250,7 @@ export default class DataVisualizer {
     
   }
   static redraw(){
+    this.longestNodePos = 0;
     this.isRedraw=true;
     this.clear();
     DataVisualizer.counter = - DataVisualizer.counter;
