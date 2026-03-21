@@ -163,10 +163,6 @@ export default class DataVisualizer {
     this.steps.push(step);
   }
 
-  /**
-   *  For student use. Draws a structure by converting it into a tree object, attempts to draw on the canvas,
-   *  Then shift it to the left end.
-   */
   private createDrawing(xs: Data, key: number): JSX.Element {
     const treeDrawer = Tree.fromSourceStructure(xs).draw();
 
@@ -176,81 +172,7 @@ export default class DataVisualizer {
     // To account for overflow to the top due to a backward arrow
     const topMargin = Config.StrokeWidth / 2;
 
-    const layer = treeDrawer.draw(leftMargin, topMargin);
-
-    //for normal mode
-    if (DataVisualizer.normalMode) {
-      return (
-        <Stage
-          key={key}
-          width={treeDrawer.width + leftMargin}
-          height={treeDrawer.height + topMargin}
-        >
-          {layer}
-        </Stage>
-      );
-    }
-    // NON-BINARY TREE WARNING
-    if (!DataVisualizer.isBinTree && DataVisualizer.BinTreeMode) {
-      return (
-        <Stage key={key} width={400} height={100}>
-          {layer}
-        </Stage>
-      );
-    }
-    if (!DataVisualizer.isGenTree && DataVisualizer.treeMode) {
-      return (
-        <Stage key={key} width={400} height={100}>
-          {layer}
-        </Stage>
-      );
-    }
-    if (DataVisualizer.getBinTreeMode()) {
-      // RenderBinaryTree
-      const EY1 = Math.max(treeDrawer.leftCOUNTER, treeDrawer.rightCOUNTER);
-      const EY2 = 2 * (Math.pow(2, EY1 - 1) - 1) + 1; // how many nodegroups stretch left or right (not including root)
-      const EY3 = treeDrawer.downCOUNTER - 1; // how many node groups stretch down
-      return (
-        <Stage
-          key={key}
-          width={EY2 * Config.NWidth * 2 + leftMargin * 2 + Config.NWidth}
-          height={
-            EY3 * Config.DistanceY * 2 +
-            EY3 * Config.BoxHeight * 2 +
-            Config.BoxHeight * 3 +
-            topMargin * 2
-          }
-        >
-          {layer}
-        </Stage>
-      );
-    } else if (DataVisualizer.getTreeMode()) {
-      // RenderGeneralTree
-      // const L = DataVisualizer.nodeCount[0];
-      const EY4 =
-        (Config.NWidth + Config.BoxWidth) * (DataVisualizer.longestNodePos + 1) - Config.BoxWidth;
-      const EY3 = treeDrawer.downCOUNTER;
-      return (
-        <Stage
-          key={key}
-          width={EY4 + leftMargin * 2}
-          height={EY3 * Config.BoxHeight * 4 + Config.BoxHeight + topMargin * 2}
-        >
-          {layer}
-        </Stage>
-      );
-    } else {
-      // OriginalView
-      return (
-        <Stage
-          key={key}
-          width={treeDrawer.width + leftMargin}
-          height={treeDrawer.height + topMargin}
-        >
-          {layer}
-        </Stage>
-      );
-    }
+    return treeDrawer.draw(leftMargin, topMargin, key);
   }
   static redraw() {
     this.isRedraw = true;
