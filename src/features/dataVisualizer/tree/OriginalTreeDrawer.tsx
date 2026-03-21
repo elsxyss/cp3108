@@ -32,6 +32,7 @@ export class OriginalTreeDrawer {
   public static colorCounter = 0;
 
   protected leftMargin: number = Config.StrokeWidth / 2;
+  protected topMargin: number = Config.StrokeWidth / 2;
 
   constructor(tree: Tree) {
     this.tree = tree;
@@ -76,10 +77,10 @@ export class OriginalTreeDrawer {
     return (
       <Stage
         key={key}
-        width={this.width + x}
-        height={this.height + y}
+        width={this.width + this.leftMargin}
+        height={this.height + this.topMargin}
       >
-        <Layer key={x + ', ' + y} offsetX={0} offsetY={this.minY}>
+        <Layer key={x + ', ' + y} offsetX={this.minX} offsetY={this.minY}>
           {this.drawables}
         </Layer>
       </Stage>

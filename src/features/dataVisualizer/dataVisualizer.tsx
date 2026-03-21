@@ -174,6 +174,7 @@ export default class DataVisualizer {
 
     return treeDrawer.draw(leftMargin, topMargin, key);
   }
+  
   static redraw() {
     this.isRedraw = true;
     this.clear();
