@@ -8,6 +8,7 @@ import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
+import { Tree } from './Tree';
 
 /**
  * Base tree drawer for original view
@@ -220,6 +221,3 @@ export class OriginalTreeDrawer {
     }
   }
 }
-
-// Import Tree at the end to avoid circular dependency
-import { Tree } from './Tree';

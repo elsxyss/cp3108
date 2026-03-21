@@ -1,4 +1,8 @@
 import type { JSX } from 'react';
+import Konva from 'konva';
+import { Layer, Stage,Text } from 'react-konva';
+
+import { toText } from '../dataVisualizerUtils';
 
 import { Config } from '../Config';
 import DataVisualizer from '../dataVisualizer';
@@ -205,9 +209,3 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
     }
   }
 }
-
-// Import Layer and Text for the warning
-import Konva from 'konva';
-import { Layer, Stage,Text } from 'react-konva';
-
-import { toText } from '../dataVisualizerUtils';
