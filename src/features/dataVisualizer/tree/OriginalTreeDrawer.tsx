@@ -7,8 +7,8 @@ import { Data } from '../dataVisualizerTypes';
 import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
-import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
 import { Tree } from './Tree';
+import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
 
 /**
  * Base tree drawer for original view
@@ -147,11 +147,11 @@ export class OriginalTreeDrawer {
 
     // draws the content
     if (node instanceof FunctionTreeNode) {
-      const drawable = node.createDrawable(x, y, parentX, parentY, 0);
+      const drawable = node.createDrawable(x, y, parentX, parentY, -1);
       this.drawables.push(drawable);
     } else if (node instanceof ArrayTreeNode) {
       // OriginalView
-      const drawable = node.createDrawable(x, y, parentX, parentY, 0);
+      const drawable = node.createDrawable(x, y, parentX, parentY, -1);
       this.drawables.push(drawable);
       let leftX = x;
       node.children?.forEach((childNode, index) => {

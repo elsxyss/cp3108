@@ -1,11 +1,11 @@
-import type { JSX } from 'react';
 import Konva from 'konva';
+import { n } from 'node_modules/react-router/dist/development/index-react-server-client-EzWJGpN_.mjs';
+import type { JSX } from 'react';
 import { Layer, Stage,Text } from 'react-konva';
-
-import { toText } from '../dataVisualizerUtils';
 
 import { Config } from '../Config';
 import DataVisualizer from '../dataVisualizer';
+import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { OriginalTreeDrawer } from './OriginalTreeDrawer';
@@ -132,7 +132,7 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
       this.drawables.push(drawable);
     } else if (node instanceof ArrayTreeNode) {
       // RenderGeneralTree
-      const drawable = node.createDrawable(x, y, parentX, parentY, colorIndex);
+      const drawable = node.createDrawable(x, y, parentX, parentY, node.nodeColor);
       this.drawables.push(drawable);
 
       const longest = DataVisualizer.nodeCount[0]; // e.g. 3
@@ -142,6 +142,7 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
       node.children?.forEach((childNode, index) => {
         let myY;
         let myX;
+        
 
         if (index == 0) {
           myY = y + Config.DistanceY * 2;
@@ -166,7 +167,6 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
             originX = 0 + this.leftMargin + (Config.NWidth + Config.BoxWidth) * originIndex;
           }
         }
-
         this.drawNode(
           childNode,
           myX,

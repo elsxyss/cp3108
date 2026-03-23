@@ -28,6 +28,7 @@ export default class DataVisualizer {
   public static isBinTree = false;
   public static isGenTree = false;
   public static nodeCount: number[] = [];
+  public static nodeColor: number[] = [];
   public static longestNodePos: number = 0;
 
   private steps: Step[] = [];
@@ -36,7 +37,7 @@ export default class DataVisualizer {
 
   private constructor() {}
 
-  public static get_depth(structures: Data[], depth: number, nodePos: number): number {
+  public static get_depth(structures: Data[], depth: number, nodePos: number, newNode:boolean): number {
     if (!(structures instanceof Array)) {
       return 0;
     }
@@ -51,10 +52,19 @@ export default class DataVisualizer {
       }
       this.nodeCount[depth]++;
     }
+    if (this.getBinTreeMode()||this.getTreeMode()) {
+      if (this.nodeColor[depth] === undefined) {
+        this.nodeColor[depth] = depth;
+      }
+      if (newNode) {
+        this.nodeColor[depth]++;
+      }
+      structures.push(this.nodeColor[depth]);
+    }
 
     this.TreeDepth = Math.max(this.TreeDepth, depth);
-    this.get_depth(structures[0], depth + 1, 0);
-    this.get_depth(structures[1], depth, nodePos + 1);
+    this.get_depth(structures[0], depth + 1, 0, true);
+    this.get_depth(structures[1], depth, nodePos + 1, false);
     return depth;
   }
 
@@ -124,7 +134,10 @@ export default class DataVisualizer {
     }
     DataVisualizer.isBinTree = this.isBinaryTree(structures);
     DataVisualizer.isGenTree = this.isGeneralTree(structures);
-    this.get_depth(structures[0], 0, 0);
+    DataVisualizer.nodeCount = [];
+    DataVisualizer.nodeColor = [];
+    this.nodeColor[0]=-1;
+    this.get_depth(structures[0], 0, 0, false);
 
     DataVisualizer._instance.addStep(structures);
     DataVisualizer.setSteps(DataVisualizer._instance.steps);

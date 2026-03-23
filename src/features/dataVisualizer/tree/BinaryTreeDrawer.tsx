@@ -1,11 +1,10 @@
-import type { JSX } from 'react';
 import Konva from 'konva';
+import type { JSX } from 'react';
 import { Layer, Stage,Text } from 'react-konva';
-
-import { toText } from '../dataVisualizerUtils';
 
 import { Config } from '../Config';
 import DataVisualizer from '../dataVisualizer';
+import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { OriginalTreeDrawer } from './OriginalTreeDrawer';
@@ -143,7 +142,7 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
       this.drawables.push(drawable);
     } else if (node instanceof ArrayTreeNode) {
       // RenderBinaryTree
-      const drawable = node.createDrawable(x, y, parentX, parentY, colorIndex);
+      const drawable = node.createDrawable(x, y, parentX, parentY, node.nodeColor);
       this.drawables.push(drawable);
 
       node.children?.forEach((childNode, index) => {
@@ -154,6 +153,11 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
             Math.pow(2, Math.round(y / (6 * Config.BoxHeight)))
         );
         scalerV--;
+        console.log(index);
+        console.log(y);
+        console.log(parentY);
+        console.log("color")
+        console.log(node);
 
         if (index === 0 && y === parentY + Config.DistanceY) {
           // NEW left branch

@@ -10,7 +10,6 @@ import { DrawableTreeNode } from './DrawableTreeNode';
  */
 export class ArrayTreeNode extends DrawableTreeNode {
   Colors: string[] = [
-    'black',
     '#d81d1d',
     '#e46510',
     '#259530',
@@ -28,13 +27,7 @@ export class ArrayTreeNode extends DrawableTreeNode {
     colorIndex: number
   ): JSX.Element {
     let color = '';
-    // if (!partOfNode){
-    //   ArrayTreeNode.i++;
-    // }
-    // if (ArrayTreeNode.i>5){
-    //   ArrayTreeNode.i=0;
-    // }
-    color = this.Colors[colorIndex % this.Colors.length];
+    color = colorIndex==-1?"black":this.Colors[colorIndex % this.Colors.length];
     const arrayProps = { nodes: this.children ?? [], x, y, color };
     const arrayDrawable = <ArrayDrawable {...arrayProps}></ArrayDrawable>;
 
