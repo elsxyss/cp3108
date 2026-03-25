@@ -156,11 +156,6 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
             Math.pow(2, Math.round(y / (6 * Config.BoxHeight)))
         );
         scalerV--;
-        console.log(index);
-        console.log(y);
-        console.log(parentY);
-        console.log('color');
-        console.log(node);
 
         if (index === 0 && y === parentY + Config.DistanceY) {
           // NEW left branch
