@@ -167,6 +167,14 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
             originX = 0 + this.leftMargin + (Config.NWidth + Config.BoxWidth) * originIndex;
           }
         }
+        
+        if (index == 0 && node.children![0] instanceof ArrayTreeNode) {
+          if (node.children![0].children![0] instanceof ArrayTreeNode) {
+            originIndex = node.children![0].children![0].nodePos;
+            originX = 0 + this.leftMargin + (Config.NWidth + Config.BoxWidth) * originIndex;
+          }
+        }
+
         this.drawNode(
           childNode,
           myX,

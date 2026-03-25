@@ -12,12 +12,10 @@ export class ArrayTreeNode extends DrawableTreeNode {
   Colors: string[] = [
     '#d81d1d',
     '#e46510',
-    '#259530',
-    '#27d6e6',
+    '#25a232',
     '#0d54ed',
-    '#5a10d1',
     '#e6148f',
-    '#870854'
+    '#ad0ede'
   ];
   createDrawable(
     x: number,
