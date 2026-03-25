@@ -29,7 +29,7 @@ export function isArray(data: Data): data is Array<Data> {
 }
 
 export function isFunction(data: Data): data is Function {
-  if( typeof data === 'function'){
+  if (typeof data === 'function') {
     DataVisualizer.isGenTree = false;
     DataVisualizer.isBinTree = false;
     return true;

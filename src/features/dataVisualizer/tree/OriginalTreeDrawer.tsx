@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import type { JSX } from 'react';
-import { Layer, Stage,Text } from 'react-konva';
+import { Layer, Stage, Text } from 'react-konva';
 
 import { Config } from '../Config';
 import { Data } from '../dataVisualizerTypes';
@@ -8,7 +8,13 @@ import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { Tree } from './Tree';
-import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
+import {
+  ArrayTreeNode,
+  DataTreeNode,
+  DrawableTreeNode,
+  FunctionTreeNode,
+  TreeNode
+} from './TreeNode';
 
 /**
  * Base tree drawer for original view
@@ -58,11 +64,7 @@ export class OriginalTreeDrawer {
       this.width = konvaText.width();
       this.height = konvaText.height();
       return (
-        <Stage
-          key={key}
-          width={this.width + x}
-          height={this.height + y}
-        >
+        <Stage key={key} width={this.width + x} height={this.height + y}>
           <Layer>
             <Text {...textConfig} />
           </Layer>
@@ -76,11 +78,7 @@ export class OriginalTreeDrawer {
     this.height = this.getNodeHeight(this.tree.rootNode) - this.minY + Config.StrokeWidth;
 
     return (
-      <Stage
-        key={key}
-        width={this.width + this.leftMargin}
-        height={this.height + this.topMargin}
-      >
+      <Stage key={key} width={this.width + this.leftMargin} height={this.height + this.topMargin}>
         <Layer key={x + ', ' + y} offsetX={this.minX} offsetY={this.minY}>
           {this.drawables}
         </Layer>

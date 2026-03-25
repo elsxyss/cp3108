@@ -37,11 +37,16 @@ export default class DataVisualizer {
 
   private constructor() {}
 
-  public static get_depth(structures: Data[], depth: number, nodePos: number, newNode:boolean): number {
+  public static get_depth(
+    structures: Data[],
+    depth: number,
+    nodePos: number,
+    newNode: boolean
+  ): number {
     if (!(structures instanceof Array)) {
       return 0;
     }
-    //nodeCount keeps track of the current index of nodes at each depth
+    // nodeCount keeps track of the current index of nodes at each depth
     if (this.getTreeMode()) {
       if (this.nodeCount[depth] === undefined) {
         this.nodeCount[depth] = 0;
@@ -52,7 +57,7 @@ export default class DataVisualizer {
       }
       this.nodeCount[depth]++;
     }
-    if (this.getBinTreeMode()||this.getTreeMode()) {
+    if (this.getBinTreeMode() || this.getTreeMode()) {
       if (this.nodeColor[depth] === undefined) {
         this.nodeColor[depth] = depth;
       }
@@ -136,7 +141,7 @@ export default class DataVisualizer {
     DataVisualizer.isGenTree = this.isGeneralTree(structures);
     DataVisualizer.nodeCount = [];
     DataVisualizer.nodeColor = [];
-    this.nodeColor[0]=-1;
+    this.nodeColor[0] = -1;
     this.get_depth(structures[0], 0, 0, false);
 
     DataVisualizer._instance.addStep(structures);
@@ -187,7 +192,7 @@ export default class DataVisualizer {
 
     return treeDrawer.draw(leftMargin, topMargin, key);
   }
-  
+
   static redraw() {
     this.isRedraw = true;
     this.clear();

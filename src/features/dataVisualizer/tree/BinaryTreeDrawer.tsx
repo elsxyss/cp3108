@@ -1,6 +1,6 @@
 import Konva from 'konva';
 import type { JSX } from 'react';
-import { Layer, Stage,Text } from 'react-konva';
+import { Layer, Stage, Text } from 'react-konva';
 
 import { Config } from '../Config';
 import DataVisualizer from '../dataVisualizer';
@@ -8,7 +8,14 @@ import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { OriginalTreeDrawer } from './OriginalTreeDrawer';
-import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
+import {
+  ArrayTreeNode,
+  DataTreeNode,
+  DrawableTreeNode,
+  FunctionTreeNode,
+  TreeNode
+} from './TreeNode';
+
 /**
  * Tree drawer for binary tree view
  */
@@ -27,11 +34,7 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
       this.width = konvaText.width();
       this.height = konvaText.height();
       return (
-        <Stage
-          key={key}
-          width={this.width + x}
-          height={this.height + y}
-        >
+        <Stage key={key} width={this.width + x} height={this.height + y}>
           <Layer>
             <Text {...textConfig} />
           </Layer>
@@ -156,7 +159,7 @@ export class BinaryTreeDrawer extends OriginalTreeDrawer {
         console.log(index);
         console.log(y);
         console.log(parentY);
-        console.log("color")
+        console.log('color');
         console.log(node);
 
         if (index === 0 && y === parentY + Config.DistanceY) {
