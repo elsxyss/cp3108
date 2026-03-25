@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import { n } from 'node_modules/react-router/dist/development/index-react-server-client-EzWJGpN_.mjs';
 import type { JSX } from 'react';
-import { Layer, Stage,Text } from 'react-konva';
+import { Layer, Stage, Text } from 'react-konva';
 
 import { Config } from '../Config';
 import DataVisualizer from '../dataVisualizer';
@@ -9,7 +9,13 @@ import { toText } from '../dataVisualizerUtils';
 import { ArrowDrawable, BackwardArrowDrawable } from '../drawable/Drawable';
 import { AlreadyParsedTreeNode } from './AlreadyParsedTreeNode';
 import { OriginalTreeDrawer } from './OriginalTreeDrawer';
-import { ArrayTreeNode, DataTreeNode, DrawableTreeNode, FunctionTreeNode, TreeNode } from './TreeNode';
+import {
+  ArrayTreeNode,
+  DataTreeNode,
+  DrawableTreeNode,
+  FunctionTreeNode,
+  TreeNode
+} from './TreeNode';
 
 /**
  * Tree drawer for general tree view
@@ -29,11 +35,7 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
       this.width = konvaText.width();
       this.height = konvaText.height();
       return (
-        <Stage
-          key={key}
-          width={this.width + x}
-          height={this.height + y}
-        >
+        <Stage key={key} width={this.width + x} height={this.height + y}>
           <Layer>
             <Text {...textConfig} />
           </Layer>
@@ -66,7 +68,11 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
     return (
       <Stage
         key={key}
-        width={(Config.NWidth + Config.BoxWidth) * (DataVisualizer.longestNodePos + 1) - Config.BoxWidth + x * 2}
+        width={
+          (Config.NWidth + Config.BoxWidth) * (DataVisualizer.longestNodePos + 1) -
+          Config.BoxWidth +
+          x * 2
+        }
         height={this.downCOUNTER * Config.BoxHeight * 4 + Config.BoxHeight + y * 2}
       >
         <Layer key={x + ', ' + y} offsetX={0} offsetY={this.minY}>
@@ -142,7 +148,6 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
       node.children?.forEach((childNode, index) => {
         let myY;
         let myX;
-        
 
         if (index == 0) {
           myY = y + Config.DistanceY * 2;
@@ -167,7 +172,7 @@ export class GeneralTreeDrawer extends OriginalTreeDrawer {
             originX = 0 + this.leftMargin + (Config.NWidth + Config.BoxWidth) * originIndex;
           }
         }
-        
+
         if (index == 0 && node.children![0] instanceof ArrayTreeNode) {
           if (node.children![0].children![0] instanceof ArrayTreeNode) {
             originIndex = node.children![0].children![0].nodePos;

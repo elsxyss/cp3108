@@ -80,13 +80,13 @@ export class Tree {
       nodeCount++;
 
       if (genTreeChecker) {
-        node.nodeColor=tree[tree.length - 1];
+        node.nodeColor = tree[tree.length - 1];
         tree.pop();
         node.nodePos = tree[tree.length - 1];
         tree.pop();
       }
       if (DataVisualizer.getBinTreeMode()) {
-        node.nodeColor=tree[tree.length - 1];
+        node.nodeColor = tree[tree.length - 1];
         tree.pop();
       }
 
